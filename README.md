@@ -2,7 +2,7 @@
 
 English | [简体中文](README_cn.md)  
 
-**HODToolbox is an open-source toolbox for hyperspectral object detection (HOD) tasks and serves as the companion code for [SpecDETR](https://github.com/ZhaoxuLi123/SpecDETR).** 
+**HODToolbox is an open-source toolbox for hyperspectral object detection (HOD) and serves as the companion code for [SpecDETR](https://github.com/ZhaoxuLi123/SpecDETR).** 
 
 **HODToolbox facilitates a paradigm shift from the traditional pixel-level hyperspectral target detection (HTD) task to the HOD task, integrating the following core functionalities:**  
 
