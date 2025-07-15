@@ -1,5 +1,6 @@
 """
-这个代码以Avon数据集为例，实现了将传统HTD数据集转换成SpecDETR所使用的到COCO格式的object detection 数据集
+This script takes the Avon dataset as an example to demonstrate the conversion of traditional HTD datasets into the COCO-format object detection datasets used by SpecDETR.
+该脚本以Avon数据集为例，实现了将传统HTD数据集转换成SpecDETR所使用的到COCO格式的object detection 数据集
 """
 
 import argparse
@@ -143,7 +144,9 @@ def create_spectra_dict(target_list, output_path, seed, good_bands):
     blue_pos = (54, 66)
     root_path = output_path
     spec_num = 1
-    target_spectra = np.zeros([len(target_list), spec_num, good_bands.size])  # 形状 目标类别数目*目标先验光谱数目*波段数目
+    target_spectra = np.zeros([len(target_list), spec_num, good_bands.size])  
+    #   形状： 目标类别数目 × 先验光谱数目 × 波段数目 
+    #  Shape: Number of object categories ×   prior spectra Number for each object × Number of spectral bands
     target_spectra[0] = data[blue_pos][good_bands]
     target_spectra[1] = data[brown_pos][good_bands]
     sio.savemat(os.path.join(root_path, 'target.mat'), {'data': target_spectra})
@@ -171,7 +174,7 @@ def create_test_set(target_list, output_path, good_bands, color_bands):
         hdr_path = 'utils/avon.hdr'
         img = spectral.envi.open(hdr_path, img_path)
         img = img[:, :, :][:, :, good_bands]
-        img_name = str(i+1)  # 数字转化为字符串
+        img_name = str(i+1) 
         img_name = 'test'+img_name.zfill(6) + '.npy'
         np.save(os.path.join(test_data_path, img_name), img)
         test_json['images'].append({"file_name": img_name, "height": img_size, "width": img_size, "id": int(i+1)})
