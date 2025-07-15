@@ -57,7 +57,8 @@ def create_train_set(target_list, output_path, seed,good_bands, color_bands):
         img_id_count = 1
         if os.path.exists(aviris_img_list[data_id-1] + '.hdr'):
             """
-            从以下地址下载0920-1631_rad_gc数据
+            Download the 0920-1631_rad_gc dataset from the following URL:
+            从以下地址下载0920-1631_rad_gc数据：
             http://dirsapps.cis.rit.edu/share2012/SPECTIR_HSI/SPECTIR_HSI_AVON_AM/DATA/RADIANCE/0920-1631.zip
             """
             aviris_img_path = aviris_img_list[data_id-1]
@@ -65,7 +66,6 @@ def create_train_set(target_list, output_path, seed,good_bands, color_bands):
             img_full_now = spectral.envi.open(aviris_hdr_path, aviris_img_path)
             nr, nc, nb = img_full_now.nrows, img_full_now.ncols, img_full_now.nbands
         else:
-            # 随机数据演示
             nr, nc, nb = 1000, 1000, 360
             img_full_now = np.random.rand(nr, nc, nb)*8000
         img_dis = 64
