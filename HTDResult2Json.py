@@ -1,7 +1,9 @@
 """
-这个代码提供了从HTD检测预测图结果到COCO格式预测框结果的转换示例
-以Avon数据集为例展示。
-HTD的检测分数图保存成mat，形状为Nc*H*W，其中Nc为目标类别数目，意味着经过Nc次光谱匹配算法得到。
+This code provides an example of converting detection prediction results from hyperspectral target detection methods to COCO-format bounding box predictions, demonstrated using the Avon dataset.
+The HTD detection score maps are saved in .mat format with dimensions Nc×H×W, where Nc represents the number of object categories.
+
+该代码提供了从HTD检测预测图结果到COCO格式预测框结果转换的Avon数据集示例。
+HTD的检测分数图保存文件为mat格式，形状为Nc*H*W，其中Nc为目标类别数目。
 """
 
 import os.path
@@ -14,9 +16,10 @@ import json
 
 
 def hotmap_seg(result_path, data_path, dataset='SPOD'):
+    # Find HTD score map files (*.mat)
     # 查找HTD检测分数图结果文件
     data_names = find_and_sort_files(result_path, ['mat'])
-
+    # Determine the image height (H), width (W), and number of object categories (cat_num). All test images are assumed to have identical H and W dimensions by default
     # 确定测试图像H，W和目标类别数cat_num，这里默认所有测试图像有相同的H和W
     results = sio.loadmat(os.path.join(result_path, data_names[0]))['result']
     cat_num, m, n = results.shape
@@ -28,8 +31,10 @@ def hotmap_seg(result_path, data_path, dataset='SPOD'):
         gt_dict[cat_i] = np.zeros((i_num, m, n))
 
     for d_i, data_name in enumerate(data_names):
+        # Load HTD score map files. 
         # 读取HTD检测分数图
         results = sio.loadmat(os.path.join(result_path, data_name))['result']
+        # Load ground truth masks with shape Nc×H×W
         # 读取mask真值 形状为同样为Nc*H*W，
         if dataset is not 'SPOD':
             gts = sio.loadmat(os.path.join(data_path, 'mask_gt', 'test' + data_name))['gt']
@@ -41,7 +46,7 @@ def hotmap_seg(result_path, data_path, dataset='SPOD'):
             gt_dict[cat_i][d_i] = gts[cat_i]
     results_norm_dict = {}
     seg_th_dict = {}
-
+    # For each target category, the optimal segmentation threshold is determined separately based on the maximum segmentation IoU criterion.
     # 每一类别确定按最佳分割IoU方式分别确定分割阈值
     for cat_i in range(cat_num):
         gt = gt_dict[cat_i]
