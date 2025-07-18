@@ -1,5 +1,7 @@
 """
-这个代码实现了从MMDetection到COCO格式预测框结果json
+This code implements the conversion from MMDetection result files to JSON format result files compatible with the COCO Python API.
+
+该代码实现了从MMDetection结果文件到COCO python API 所用的json格式结果文件转换。
 """
 from utils.utils import *
 import argparse
