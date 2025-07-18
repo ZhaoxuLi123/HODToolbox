@@ -1,6 +1,6 @@
 """
-This script takes the Avon dataset as an example to demonstrate the conversion of traditional HTD datasets into the COCO-format object detection datasets used by SpecDETR.
-该脚本以Avon数据集为例，实现了将传统HTD数据集转换成SpecDETR所使用的到COCO格式的object detection 数据集
+This code takes the Avon dataset as an example to demonstrate the conversion of traditional HTD datasets into the COCO-format object detection datasets used by SpecDETR.
+该代码以Avon数据集为例，实现了将传统HTD数据集转换成SpecDETR所使用的到COCO格式的object detection 数据集
 """
 
 import argparse
