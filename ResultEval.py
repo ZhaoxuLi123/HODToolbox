@@ -1,6 +1,6 @@
 """
-这个代码用于评估高光谱目标检测结果（矩形框预测）
-包含 coco AP AR
+This code is designed for evaluating hyperspectral object detection results (bounding box predictions).
+该代码用于评估高光谱目标检测结果（矩形框预测）
 """
 from utils.utils import *
 import json
@@ -27,7 +27,8 @@ if __name__ == '__main__':
 
     if dataset in ['Avon', 'SPOD']:
         """
-        精细边界框评估  
+        Evaluation with Fine-Boundary Ground Truth Boxes
+        在有精细边界真值框情况下评估  
         """
         txt_list = []
         for json_file in json_files:
@@ -61,7 +62,8 @@ if __name__ == '__main__':
 
     if dataset in ['MUUFLGulfport', 'SanDiego']:
         """
-        不精细边界框评估  
+        Evaluation Without Fine-Boundary Ground Truth Boxes
+        在没有精细边界框情况下评估  
         """
         output_path = os.path.join('./eval_result/', dataset + 'Result/eval')
         os.makedirs(output_path, exist_ok=True)
