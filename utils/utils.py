@@ -89,12 +89,23 @@ def float_bbox_round(x1, y1, x2, y2):
 
 def calculate_iouv2(det_bboxes, gt_bboxes):
     """
-    计算两组边界框之间的 IoU（交并比）
+    Compute IoU (Intersection over Union) between two sets of bounding boxes
+    
+    ​​Parameters:​​
+    bbox_gt: NumPy array of shape (n, 4)Ground truth bounding boxes in [x_min, y_min, width, height]format
+    bboxes: NumPy array of shape (m, 4)Detected bounding boxes in [x_min, y_min, width, height]format
+    
+    ​​Returns:​​
+    iou: NumPy array of shape (n, m)IoU matrix where iou[i, j]represents the IoU between the i-thground truth box and j-thdetected box
 
+    
+    计算两组边界框之间的 IoU（交并比）
+    
     参数:
     det_bboxes: numpy数组，形状为 (n, 4)，表示检测到的边界框，每行表示一个边界框，格式为 [x_min, y_min, width, height]
     gt_bboxes: numpy数组，形状为 (m, 4)，表示真实标签的边界框，每行表示一个边界框，格式为 [x_min, y_min, width, height]
 
+    
     返回:
     iou: numpy数组，形状为 ( n, m)，表示每个真实标签边界框与每个检测到的边界框之间的IoU值
     """
@@ -117,6 +128,14 @@ def calculate_iouv2(det_bboxes, gt_bboxes):
 
 def calculate_iou(bbox_gt, bboxes):
     """
+    Compute Intersection over Union (IoU) Between Two Sets of Bounding Boxes
+    ​​Parameters:​​
+    bbox_gt: NumPy array of shape (n, 4) Ground truth bounding boxes in [x_min, y_min, width, height]format
+    bboxes: NumPy array of shape (m, 4) Detected bounding boxes in [x_min, y_min, width, height]format
+    ​​Returns:​​
+    iou: NumPy array of shape (n, m). IoU matrix where iou[i, j]represents the IoU between the i-th ground truth box and j-th detected box
+
+    
     计算两组边界框之间的 IoU（交并比）
 
     参数:
@@ -305,13 +324,22 @@ def eval_ap_ar_mini(pred_json_path,gt_json_path, txt='',log = None, iouThr = 0.2
 
 def check_bboxes_within_limit(bbox_max_limit, bboxes):
     """
+    Check if Bounding Boxes Exceed Maximum Boundary Limits
+    ​​Parameters:​​
+    bbox_max_limit: List of shape (4) Maximum boundary limits in [x_min, y_min, width, height]format
+    bboxes: NumPy array of shape (m, 4) Detected bounding boxes in [x_min, y_min, width, height]format
+    
+    ​​Returns:​​
+    within_limit: NumPy array of shape (m,) Boolean array where Trueindicates the corresponding bbox is within limits, Falseindicates it exceeds the boundaries
+
+    
     判断边界框是否超过最大边界范围
 
     参数:
     bbox_max_limit: list，形状为 (4)，表示最大边界范围，格式为 [x_min, y_min, width, height]
     bboxes: numpy数组，形状为 (m, 4)，表示检测到的边界框，格式为 [x_min, y_min, width, height]
     返回:
-    : numpy数组，形状为(m,)，每个元素为True表示对应的bbox未超过最大边界范围，为False表示bbox超过最大边界范围
+    within_limit: numpy数组，形状为(m,)，每个元素为True表示对应的bbox未超过最大边界范围，为False表示bbox超过最大边界范围
     """
     x_min_limit, y_min_limit, width_limit, height_limit = bbox_max_limit
     xmax_limit = x_min_limit + width_limit
@@ -346,7 +374,19 @@ def judging_prediction(gts, preds_in, score_th=0.2, iou_th=0.25, false_preds_cls
     false_preds_cat  位置匹配但类别未匹配的错误预测框
     false_preds_pos 位置未匹配的错误预测框
     match_relu  当有一个真值框多个匹配预测框损失的选取规则 'IoUFirst' IoU最大作为匹配结果 'ScoreFirst' 置信度分数最大作为匹配结果
+
+    true_preds:Correctly detected bounding boxes that match both position(IoU > threshold) and categoryof ground truth.
+    false_preds: Composite of all incorrect detections, false_preds_redun + false_preds_cat + false_preds_pos
+    matched_gt: Ground truth boxes successfully detected(true positives)
+    unmatched_gt：Undetected ground truth boxes (false negatives)
+    false_preds_redun：Redundant correct detections (multiple boxes for one GT)
+    false_preds_cat: Position-matched but class-mismatched predictions
+    false_preds_pos: Position-mismatched predictions (regression errors)
+    match_rule:  how to select the optimal prediction when multiple candidate bounding boxes match a single ground truth box. 
+            ​​     'IoUFirst'​​ (Default):Selects the prediction with the ​​highest IoU​​ with the ground truth.
+                ​​ 'ScoreFirst'  Selects the prediction with the ​​highest confidence score​​.
     """
+                           
     preds = []
     for det in preds_in:
         if det['score'] >= score_th:
